@@ -33,7 +33,7 @@ import csv
 
 
 def ReadFromFile():
-    draft_pool = pd.read_csv('FantasyPros_Fantasy_Basketball_Overall_2019_Projections.csv')
+    draft_pool = pd.read_csv('data/FantasyPros_Fantasy_Basketball_Overall_2019_Projections.csv')
     return draft_pool
 
 def RemovePlayer(draft_pool, pname):
