@@ -4,18 +4,18 @@ import pandas as pd
 df = pd.read_csv('data/data_set.csv')
 #print(df['FG'].size)
 
-# find player by name, return that row
+# Find player by name, return that row
 def find_player(player_name, avail):
     return avail[avail['Player'] == player_name]
 
-# remove player from available and place into roster, returning updated roster
+# Remove player from available and place into roster, returning updated roster
 def draft_player(player, roster, avail):
     player_row = avail[avail['Player'] == player]
     updated_roster = roster.append(player_row)
     avail.drop(player_row.index, inplace=True)
     return updated_roster
 
-# generate and return median player
+# Generate and return median player
 def median_player(avail):
     d = {
         'Player': ['Mr Median'],
@@ -34,7 +34,7 @@ def median_player(avail):
     median = pd.DataFrame(data=d)
     return median
 
-# generate and return mean player
+# Generate and return mean player
 def mean_player(avail):
     d = {
         'Player': ['Mr Mean'],
@@ -53,13 +53,13 @@ def mean_player(avail):
     mean = pd.DataFrame(data=d)
     return mean
 
-# return net change on a percent stat
+# Return net change on a percent stat
 def net_change_percent_stat(t_attempts, t_made, p_attempts, p_made):
     after = (t_made + p_made) / (t_attempts + p_attempts)
     before = t_attempts / t_made
     return after - before
 
-# return net change on a counting stat
+# Return net change on a counting stat
 def net_change_counting_stat(roster, player, counting_stat):
     t_stat = roster[counting_stat].sum()
     p_stat = player[counting_stat].values[0]
@@ -68,7 +68,7 @@ def net_change_counting_stat(roster, player, counting_stat):
     before = t_stat / t_size
     return after - before
 
-# get net change for field goal percentage
+# Get net change for field goal percentage
 def net_change_fg(roster, player):
     t_fga = roster['FGA'].sum()
     t_fgm = roster['FG'].sum()
@@ -76,7 +76,7 @@ def net_change_fg(roster, player):
     p_fgm = player['FG'].values[0]
     return net_change_percent_stat(t_fga, t_fgm, p_fga, p_fgm)
 
-# get net change for free throw percentage
+# Get net change for free throw percentage
 def net_change_ft(roster, player):
     t_fta = roster['FTA'].sum()
     t_ftm = roster['FT'].sum()
@@ -84,7 +84,7 @@ def net_change_ft(roster, player):
     p_ftm = player['FT'].values[0]
     return net_change_percent_stat(t_fta, t_ftm, p_fta, p_ftm)
 
-# generate a player with net change in stats given potential acquisition
+# Generate a player with net change in stats given potential acquisition
 # to a given team, return that player
 def net_change_on_acquisition(roster, player):
     d = {
@@ -115,25 +115,8 @@ def generate_net_change_table(roster, avail):
     net_change_table.reset_index(inplace=True, drop=True) 
     return net_change_table
 
-#Generate a table of all of the players and their z scores
-def z_score_on_acquisition(net_player):
 
-    d = {
-        'Player': [net_player['Player'].values[0]],
-        'NET_FG%': [net_change_fg(roster, player)],
-        'NET_FT%': [net_change_ft(roster, player)],
-        'NET_3P': [net_change_counting_stat(roster, player, '3P')],
-        'NET_TRB': [net_change_counting_stat(roster, player, 'TRB')],
-        'NET_AST': [net_change_counting_stat(roster, player, 'AST')],
-        'NET_STL': [net_change_counting_stat(roster, player, 'STL')],
-        'NET_BLK': [net_change_counting_stat(roster, player, 'BLK')],
-        'NET_TOV': [net_change_counting_stat(roster, player, 'TOV') * -1],
-        'NET_PTS': [net_change_counting_stat(roster, player, 'PTS')]
-    }
-    net_change = pd.DataFrame(d)
-    return net_change
-
-#Generates the standard deviations and means of each stat category 
+# Generates the standard deviations and means of each stat category 
 def generate_z_score_dict(net_change_table):
     z_score_dict = {
         #Standard Deviations
@@ -159,11 +142,11 @@ def generate_z_score_dict(net_change_table):
     }
     return z_score_dict
 
-#Calculates z score
+# Calculates z score
 def z_score(x, mean, std):
     return ((x - mean)/std)
 
-#Generates player with their z scores for each stat category based on net change
+# Generates player with their z scores for each stat category based on net change
 def generate_z_score_player (net_player, z_score_dict):
     d = {
         'Player': [net_player['Player'].values[0]],
