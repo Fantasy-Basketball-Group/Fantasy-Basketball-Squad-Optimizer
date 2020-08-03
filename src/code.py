@@ -2,7 +2,7 @@ import pandas as pd
 
 # import data set
 df = pd.read_csv('data/data_set.csv')
-print(df['FG'].size)
+#print(df['FG'].size)
 
 # find player by name, return that row
 def find_player(player_name, avail):
@@ -102,11 +102,122 @@ def net_change_on_acquisition(roster, player):
     net_change = pd.DataFrame(d)
     return net_change
 
-roster = pd.DataFrame()
-roster = draft_player('Stephen Curry', roster, df)
-roster = draft_player('LeBron James', roster, df)
-roster = draft_player('Giannis Antetokounmpo', roster, df)
-player = find_player('Rodney Hood', df)
-print(roster)
-print(player)
-print(net_change_on_acquisition(roster, player))
+
+
+#Generates a table of net change in each stat category for each player available given that they join the roster 
+def generate_net_change_table(roster, avail):
+    net_change_table = pd.DataFrame()
+    for i in avail.index:
+        player = avail[avail['Player'].index == i]
+        net_player = net_change_on_acquisition(roster, player)
+        net_change_table = net_change_table.append(net_player)
+
+    net_change_table.reset_index(inplace=True, drop=True) 
+    return net_change_table
+
+#Generate a table of all of the players and their z scores
+def z_score_on_acquisition(net_player):
+
+    d = {
+        'Player': [net_player['Player'].values[0]],
+        'NET_FG%': [net_change_fg(roster, player)],
+        'NET_FT%': [net_change_ft(roster, player)],
+        'NET_3P': [net_change_counting_stat(roster, player, '3P')],
+        'NET_TRB': [net_change_counting_stat(roster, player, 'TRB')],
+        'NET_AST': [net_change_counting_stat(roster, player, 'AST')],
+        'NET_STL': [net_change_counting_stat(roster, player, 'STL')],
+        'NET_BLK': [net_change_counting_stat(roster, player, 'BLK')],
+        'NET_TOV': [net_change_counting_stat(roster, player, 'TOV') * -1],
+        'NET_PTS': [net_change_counting_stat(roster, player, 'PTS')]
+    }
+    net_change = pd.DataFrame(d)
+    return net_change
+
+#Generates the standard deviations and means of each stat category 
+def generate_z_score_dict(net_change_table):
+    z_score_dict = {
+        #Standard Deviations
+        'FG%_std' : net_change_table['NET_FG%'].std(),
+        'FT%_std' : net_change_table['NET_FT%'].std(),
+        '3P_std' : net_change_table['NET_3P'].std(),
+        'TRB_std' : net_change_table['NET_TRB'].std(),
+        'AST_std' : net_change_table['NET_AST'].std(),
+        'STL_std' : net_change_table['NET_STL'].std(),
+        'BLK_std' : net_change_table['NET_BLK'].std(),
+        'TOV_std' : net_change_table['NET_TOV'].std(),
+        'PTS_std' : net_change_table['NET_PTS'].std(), 
+        #Means
+        'FG%_mean' : net_change_table['NET_FG%'].mean(),
+        'FT%_mean' : net_change_table['NET_FT%'].mean(),
+        '3P_mean' : net_change_table['NET_3P'].mean(),
+        'TRB_mean' : net_change_table['NET_TRB'].mean(),
+        'AST_mean' : net_change_table['NET_AST'].mean(),
+        'STL_mean' : net_change_table['NET_STL'].mean(),
+        'BLK_mean' : net_change_table['NET_BLK'].mean(),
+        'TOV_mean' : net_change_table['NET_TOV'].mean(),
+        'PTS_mean' : net_change_table['NET_PTS'].mean()
+    }
+    return z_score_dict
+
+#Calculates z score
+def z_score(x, mean, std):
+    return ((x - mean)/std)
+
+#Generates player with their z scores for each stat category based on net change
+def generate_z_score_player (net_player, z_score_dict):
+    d = {
+        'Player': [net_player['Player'].values[0]],
+        'Z_FG%': [z_score(net_player['NET_FG%'].values[0], z_score_dict['FG%_mean'], z_score_dict['FG%_std'])],
+        'Z_FT%': [z_score(net_player['NET_FT%'].values[0], z_score_dict['FT%_mean'], z_score_dict['FT%_std'])],
+        'Z_3P': [z_score(net_player['NET_3P'].values[0], z_score_dict['3P_mean'], z_score_dict['3P_std'])],
+        'Z_TRB': [z_score(net_player['NET_TRB'].values[0], z_score_dict['TRB_mean'], z_score_dict['TRB_std'])],
+        'Z_AST': [z_score(net_player['NET_AST'].values[0], z_score_dict['AST_mean'], z_score_dict['AST_std'])],
+        'Z_STL': [z_score(net_player['NET_STL'].values[0], z_score_dict['STL_mean'], z_score_dict['STL_std'])],
+        'Z_BLK': [z_score(net_player['NET_BLK'].values[0], z_score_dict['BLK_mean'], z_score_dict['BLK_std'])],
+        'Z_TOV': [z_score(net_player['NET_TOV'].values[0], z_score_dict['TOV_mean'], z_score_dict['TOV_std'])],
+        'Z_PTS': [z_score(net_player['NET_PTS'].values[0], z_score_dict['PTS_mean'], z_score_dict['PTS_std'])]
+    }
+    d.update({'Z_TOT' : [
+        d['Z_FG%'][0] +
+        d['Z_FT%'][0] +
+        d['Z_3P'][0] +
+        d['Z_TRB'][0] + 
+        d['Z_AST'][0] + 
+        d['Z_STL'][0] + 
+        d['Z_BLK'][0] + 
+        d['Z_TOV'][0] + 
+        d['Z_PTS'][0]
+    ]})
+
+    d.update({'Z_AVG' : [d['Z_TOT'][0] / 9]})
+    z_score_player = pd.DataFrame(d)
+    return z_score_player
+
+#Generates the z score table using net change table
+def generate_z_score_table(net_change_table):
+    z_score_dict = generate_z_score_dict(net_change_table)
+    z_score_table = pd.DataFrame()
+    for i in net_change_table.index:
+        net_player = net_change_table[net_change_table['Player'].index == i]
+        z_player = generate_z_score_player(net_player, z_score_dict)
+        z_score_table = z_score_table.append(z_player)
+
+    z_score_table.sort_values(by = ['Z_AVG'], ascending = False, inplace=True)
+    z_score_table.reset_index(inplace=True, drop=True)
+    return z_score_table
+
+
+
+#roster = pd.DataFrame()
+# roster = draft_player('Stephen Curry', roster, df)
+# roster = draft_player('LeBron James', roster, df)
+# roster = draft_player('Giannis Antetokounmpo', roster, df)
+roster = mean_player(df)
+net_change_table = generate_net_change_table(roster, df)
+z_score_table = generate_z_score_table(net_change_table)
+#print(find_player("Draymond Green", z_score_table))
+print(z_score_table)
+#player = find_player('Rodney Hood', df)
+# #print(roster)
+#print(player)
+# #print(net_change_on_acquisition(roster, player))
