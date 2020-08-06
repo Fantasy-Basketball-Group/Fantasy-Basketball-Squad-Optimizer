@@ -1,9 +1,5 @@
 import pandas as pd
 
-# import data set
-df = pd.read_csv("data/data_set.csv")
-# print(df['FG'].size)
-
 # Find player by name, return that row
 def find_player(player_name, avail):
     return avail[avail["Player"] == player_name]
@@ -223,23 +219,18 @@ def generate_z_score_player(net_player, z_score_dict):
             )
         ],
     }
-    d.update(
-        {
-            "Z_TOT": [
-                d["Z_FG%"][0]
-                + d["Z_FT%"][0]
-                + d["Z_3P"][0]
-                + d["Z_TRB"][0]
-                + d["Z_AST"][0]
-                + d["Z_STL"][0]
-                + d["Z_BLK"][0]
-                + d["Z_TOV"][0]
-                + d["Z_PTS"][0]
-            ]
-        }
+    z_total = (
+        d["Z_FG%"][0]
+        + d["Z_FT%"][0]
+        + d["Z_3P"][0]
+        + d["Z_TRB"][0]
+        + d["Z_AST"][0]
+        + d["Z_STL"][0]
+        + d["Z_BLK"][0]
+        + d["Z_TOV"][0]
+        + d["Z_PTS"][0]
     )
-
-    d.update({"Z_AVG": [d["Z_TOT"][0] / 9]})
+    d.update({"Z_AVG": [z_total / 9]})
     z_score_player = pd.DataFrame(d)
     return z_score_player
 
@@ -258,16 +249,24 @@ def generate_z_score_table(net_change_table):
     return z_score_table
 
 
-# roster = pd.DataFrame()
-# roster = draft_player('Stephen Curry', roster, df)
-# roster = draft_player('LeBron James', roster, df)
-# roster = draft_player('Giannis Antetokounmpo', roster, df)
-roster = mean_player(df)
-net_change_table = generate_net_change_table(roster, df)
-z_score_table = generate_z_score_table(net_change_table)
-# print(find_player("Draymond Green", z_score_table))
-print(z_score_table)
-# player = find_player('Rodney Hood', df)
-# #print(roster)
-# print(player)
-# #print(net_change_on_acquisition(roster, player))
+# Read in data set
+# df = pd.read_csv("data/data_set.csv")
+# print(df['FG'].size)
+
+# roster = sf.mean_player(df)
+# net_change_table = sf.generate_net_change_table(roster, df)
+# print(net_change_table)
+# z_score_table = sf.generate_z_score_table(net_change_table)
+# print(z_score_table)
+
+# roster = sf.draft_player('Giannis Antetokounmpo', roster, df)
+# net_change_table = sf.generate_net_change_table(roster, df)
+# print(net_change_table)
+# z_score_table = sf.generate_z_score_table(net_change_table)
+# print(z_score_table)
+# print(sf.find_player('Kyrie Irving', z_score_table))
+
+# for column in z_score_table:
+#     print(column)
+#     print(z_score_table[column].min())
+#     print(z_score_table[column].max())
