@@ -255,17 +255,37 @@ def generate_z_score_table(net_change_table):
     return z_score_table
 
 
+# prints the top n players from a given category
+def print_top_n(table, column_label, n):
+    if column_label not in list(table.columns.values):
+        return False
+    sorted_table = table.sort_values(by=[column_label], ascending=False)
+    sorted_table.reset_index(inplace=True, drop=True)
+    sorted_table.drop(sorted_table.index[n:], inplace=True)
+    print(sorted_table)
+    return True
+
+
 # Read in data set
 # df = pd.read_csv("data/data_set.csv")
+# print(df)
 # print(df['FG'].size)
 
 # roster = mean_player(df)
+# print(roster)
 # net_change_table = generate_net_change_table(roster, df)
+
+# z_score_dict = generate_z_score_dict(net_change_table)
+# for stat in z_score_dict:
+#     print(stat + ": ", end='')
+#     print(z_score_dict[stat])
+
 # print(net_change_table)
 # z_score_table = generate_z_score_table(net_change_table)
+# print_top_n(z_score_table, "Z_AVG", 10)
 # print(z_score_table)
 
-# roster = draft_player('Giannis Antetokounmpo', roster, df)
+# roster = draft_player('Stephen Curry', roster, df)
 
 # print(roster)
 # net_change_table = generate_net_change_table(roster, df)
@@ -273,6 +293,7 @@ def generate_z_score_table(net_change_table):
 # z_score_table = generate_z_score_table(net_change_table)
 # print(z_score_table)
 # print(find_player('Kyrie Irving', z_score_table))
+# print_top_n(z_score_table, "Z_AVG", 10)
 
 # for column in z_score_table:
 #     print(column)
