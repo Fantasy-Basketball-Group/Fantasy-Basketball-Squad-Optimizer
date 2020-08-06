@@ -18,7 +18,8 @@ print(z_score_table)
 
 for stat_str in z_score_table:
     # Create matplotlib histogram
-    if stat_str == 'Player': continue
+    if stat_str == "Player":
+        continue
     z_avg_array = z_score_table[stat_str].to_numpy()
     num_bins = 25
     n, bins, patches = plt.hist(z_avg_array, num_bins)

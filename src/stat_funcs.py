@@ -7,10 +7,16 @@ def find_player(player_name, avail):
 
 # Remove player from available and place into roster, returning updated roster
 def draft_player(player, roster, avail):
+    if "Mr Mean" in roster["Player"].values:
+        m_player = roster[roster["Player"] == "Mr Mean"]
+        roster.drop(m_player.index, inplace=True)
+    if "Mr Median" in roster["Player"].values:
+        m_player = roster[roster["Player"] == "Mr Median"]
+        roster.drop(m_player.index, inplace=True)
     player_row = avail[avail["Player"] == player]
-    updated_roster = roster.append(player_row)
+    roster = roster.append(player_row)
     avail.drop(player_row.index, inplace=True)
-    return updated_roster
+    return roster
 
 
 # Generate and return median player
@@ -253,18 +259,20 @@ def generate_z_score_table(net_change_table):
 # df = pd.read_csv("data/data_set.csv")
 # print(df['FG'].size)
 
-# roster = sf.mean_player(df)
-# net_change_table = sf.generate_net_change_table(roster, df)
+# roster = mean_player(df)
+# net_change_table = generate_net_change_table(roster, df)
 # print(net_change_table)
-# z_score_table = sf.generate_z_score_table(net_change_table)
+# z_score_table = generate_z_score_table(net_change_table)
 # print(z_score_table)
 
-# roster = sf.draft_player('Giannis Antetokounmpo', roster, df)
-# net_change_table = sf.generate_net_change_table(roster, df)
+# roster = draft_player('Giannis Antetokounmpo', roster, df)
+
+# print(roster)
+# net_change_table = generate_net_change_table(roster, df)
 # print(net_change_table)
-# z_score_table = sf.generate_z_score_table(net_change_table)
+# z_score_table = generate_z_score_table(net_change_table)
 # print(z_score_table)
-# print(sf.find_player('Kyrie Irving', z_score_table))
+# print(find_player('Kyrie Irving', z_score_table))
 
 # for column in z_score_table:
 #     print(column)
