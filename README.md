@@ -6,3 +6,6 @@ This program will help a user build the most optimal fantasy basketball
 
 ## Run
 `python3 src/charts.py` to generate histograms
+
+## Test
+`pytest tests`
