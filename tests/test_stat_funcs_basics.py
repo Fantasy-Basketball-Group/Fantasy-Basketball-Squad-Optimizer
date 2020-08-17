@@ -62,7 +62,6 @@ def test_means_player_produces_means():
 def test_draft_player_to_empty_roster_success():
     avail = df.copy()  # generate duplicate data
     empty_roster = pd.DataFrame()  # generate empty roster
-    assert empty_roster.empty == True  # roster is actually empty
     player_name = "Stephen Curry"
     new_roster = sf.draft_player(player_name, empty_roster, avail)
     assert (
@@ -94,3 +93,42 @@ def test_draft_player_to_empty_roster_fail_to_find():
         single_player
     )  # single unchanged
     assert avail.equals(df)  # avail unchanged
+
+
+# test that draft player function success for empty roster
+def test_draft_player_to_empty_success():
+    avail = df.copy()
+    empty_roster = pd.DataFrame()
+    player_name = "Stephen Curry"
+    new_roster = sf.draft_player(player_name, empty_roster, avail)
+    assert (
+        len(avail.values) == len(df.values) - 1
+    )  # size of available players decreases by 1
+    assert (
+        sf.find_player(player_name, avail).empty == True
+    )  # drafted player no longer available
+    assert len(new_roster.values) == 1  # new roster has exactly one player in it
+    assert (
+        new_roster["Player"].values[0] == player_name
+    )  # that player is the one that was drafted
+
+
+# test that draft player function success for mean player in roster
+def test_draft_player_to_mean_player_roster():
+    avail = df.copy()
+    mean_player = sf.mean_player(avail)
+    player_name = "Stephen Curry"
+    new_roster = sf.draft_player(player_name, mean_player, avail)
+    assert (
+        len(avail.values) == len(df.values) - 1
+    )  # size of available players decreases by 1
+    assert (
+        sf.find_player(player_name, avail).empty == True
+    )  # drafted player no longer available
+    assert len(new_roster.values) == 1  # new roster has exactly one player in it
+    assert (
+        new_roster["Player"].values[0] == player_name
+    )  # that player is the one that was drafted
+    assert (
+        sf.find_player("Mr Mean", new_roster).empty == True
+    )  # mean player no longer on roster
