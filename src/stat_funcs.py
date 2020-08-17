@@ -7,10 +7,12 @@ def find_player(player_name, avail):
 
 # Remove player from available and place into roster, returning updated roster
 def draft_player(player, roster, avail):
-    if "Mr Mean" in roster["Player"].values:
+    player_row = avail[avail["Player"] == player]
+    if player_row.empty == True:
+        return roster
+    if roster.empty == False and "Mr Mean" in roster["Player"].values:
         m_player = roster[roster["Player"] == "Mr Mean"]
         roster.drop(m_player.index, inplace=True)
-    player_row = avail[avail["Player"] == player]
     roster = roster.append(player_row)
     avail.drop(player_row.index, inplace=True)
     return roster
