@@ -10,9 +10,6 @@ def draft_player(player, roster, avail):
     if "Mr Mean" in roster["Player"].values:
         m_player = roster[roster["Player"] == "Mr Mean"]
         roster.drop(m_player.index, inplace=True)
-    if "Mr Median" in roster["Player"].values:
-        m_player = roster[roster["Player"] == "Mr Median"]
-        roster.drop(m_player.index, inplace=True)
     player_row = avail[avail["Player"] == player]
     roster = roster.append(player_row)
     avail.drop(player_row.index, inplace=True)
