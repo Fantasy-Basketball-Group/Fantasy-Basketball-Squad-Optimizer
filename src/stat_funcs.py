@@ -19,26 +19,6 @@ def draft_player(player, roster, avail):
     return roster
 
 
-# Generate and return median player
-def median_player(avail):
-    d = {
-        "Player": ["Mr Median"],
-        "FG": [avail["FG"].median()],
-        "FGA": [avail["FGA"].median()],
-        "FT": [avail["FT"].median()],
-        "FTA": [avail["FTA"].median()],
-        "3P": [avail["3P"].median()],
-        "TRB": [avail["TRB"].median()],
-        "AST": [avail["AST"].median()],
-        "STL": [avail["STL"].median()],
-        "BLK": [avail["BLK"].median()],
-        "TOV": [avail["TOV"].median()],
-        "PTS": [avail["PTS"].median()],
-    }
-    median = pd.DataFrame(data=d)
-    return median
-
-
 # Generate and return mean player
 def mean_player(avail):
     d = {
