@@ -36,3 +36,21 @@ def test_get_player_failure():
     player_name = "Steven Curry"
     player_data = sf.find_player(player_name, df)
     assert len(player_data.values) == 0
+
+
+# test that mean player function produces means of all stats
+def test_means_player_produces_means():
+    mean_player = sf.mean_player(df)
+    assert len(mean_player.values) == 1  # produces a single player
+    assert mean_player["Player"].values[0] == "Mr Mean"  # name is correct
+    assert mean_player["FG"].values[0] == df["FG"].mean()  # fg is correct
+    assert mean_player["FGA"].values[0] == df["FGA"].mean()  # fga is correct
+    assert mean_player["3P"].values[0] == df["3P"].mean()  # 3p is correct
+    assert mean_player["FT"].values[0] == df["FT"].mean()  # ft is correct
+    assert mean_player["FTA"].values[0] == df["FTA"].mean()  # fta is correct
+    assert mean_player["TRB"].values[0] == df["TRB"].mean()  # trb is correct
+    assert mean_player["AST"].values[0] == df["AST"].mean()  # ast is correct
+    assert mean_player["STL"].values[0] == df["STL"].mean()  # stl is correct
+    assert mean_player["BLK"].values[0] == df["BLK"].mean()  # blk is correct
+    assert mean_player["TOV"].values[0] == df["TOV"].mean()  # tov is correct
+    assert mean_player["PTS"].values[0] == df["PTS"].mean()  # pts is correct
