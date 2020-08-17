@@ -60,9 +60,9 @@ def test_means_player_produces_means():
 
 # test that draft player function removes a player from the given roster and places it into an empty roster
 def test_draft_player_to_empty_roster_success():
+    avail = df.copy()  # generate duplicate data
     empty_roster = pd.DataFrame()  # generate empty roster
     assert empty_roster.empty == True  # roster is actually empty
-    avail = df.copy()  # generate duplicate data
     player_name = "Stephen Curry"
     new_roster = sf.draft_player(player_name, empty_roster, avail)
     assert (
@@ -75,3 +75,22 @@ def test_draft_player_to_empty_roster_success():
     assert (
         new_roster["Player"].values[0] == "Stephen Curry"
     )  # that player is the one drafted
+
+
+# test that draft player function doesn't make any modifications on fail to find
+def test_draft_player_to_empty_roster_fail_to_find():
+    avail = df.copy()
+    empty_roster = pd.DataFrame()
+    mean_player = sf.mean_player(avail)
+    single_player = sf.find_player("Damian Lillard", avail)
+    player_name = "Steven Curry"
+    assert sf.draft_player(player_name, empty_roster, avail).equals(
+        empty_roster
+    )  # empty unchanged
+    assert sf.draft_player(player_name, mean_player, avail).equals(
+        mean_player
+    )  # mean unchanged
+    assert sf.draft_player(player_name, single_player, avail).equals(
+        single_player
+    )  # single unchanged
+    assert avail.equals(df)  # avail unchanged
