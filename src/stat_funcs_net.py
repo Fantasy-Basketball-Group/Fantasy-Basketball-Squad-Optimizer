@@ -1,10 +1,32 @@
 import pandas as pd
 
 # Return net change on a percent stat
-def net_change_percent_stat(t_attempts, t_made, p_attempts, p_made):
-    after = (t_made + p_made) / (t_attempts + p_attempts)
-    before = t_attempts / t_made
+def net_change_percent_stat(t_made, t_attempts, p_made, p_attempts):
+    before = (
+        t_made / t_attempts
+    )  # shooting percentage of team before player acquisition
+    after = (t_made + p_made) / (
+        t_attempts + p_attempts
+    )  # shooting percentage after player acquisition
     return after - before
+
+
+# Get net change for field goal percentage
+def net_change_fg(roster, player):
+    t_fga = roster["FGA"].sum()
+    t_fgm = roster["FGM"].sum()
+    p_fga = player["FGA"].values[0]
+    p_fgm = player["FGM"].values[0]
+    return net_change_percent_stat(t_fgm, t_fga, p_fgm, p_fga)
+
+
+# Get net change for free throw percentage
+def net_change_ft(roster, player):
+    t_fta = roster["FTA"].sum()
+    t_ftm = roster["FTM"].sum()
+    p_fta = player["FTA"].values[0]
+    p_ftm = player["FTM"].values[0]
+    return net_change_percent_stat(t_ftm, t_fta, p_ftm, p_fta)
 
 
 # Return net change on a counting stat
@@ -15,24 +37,6 @@ def net_change_counting_stat(roster, player, counting_stat):
     after = (t_stat + p_stat) / (t_size + 1)
     before = t_stat / t_size
     return after - before
-
-
-# Get net change for field goal percentage
-def net_change_fg(roster, player):
-    t_fga = roster["FGA"].sum()
-    t_fgm = roster["FGM"].sum()
-    p_fga = player["FGA"].values[0]
-    p_fgm = player["FGM"].values[0]
-    return net_change_percent_stat(t_fga, t_fgm, p_fga, p_fgm)
-
-
-# Get net change for free throw percentage
-def net_change_ft(roster, player):
-    t_fta = roster["FTA"].sum()
-    t_ftm = roster["FTM"].sum()
-    p_fta = player["FTA"].values[0]
-    p_ftm = player["FTM"].values[0]
-    return net_change_percent_stat(t_fta, t_ftm, p_fta, p_ftm)
 
 
 # Generate a player with net change in stats given potential acquisition
