@@ -6,6 +6,7 @@ import pandas as pd
 
 df = pd.read_csv("data/test_data_set.csv")
 
+# FIND_PLAYER TESTS
 
 # test to find player successfully
 def test_find_player_success():
@@ -39,6 +40,8 @@ def test_find_player_failure():
     assert player_data.empty == True
 
 
+# MEAN_PLAYER TESTS
+
 # test that mean player function produces means of all stats
 def test_means_player_produces_means():
     avail = df.copy()  # generate duplicate data
@@ -57,6 +60,8 @@ def test_means_player_produces_means():
     assert mean_player["TOV"].values[0] == avail["TOV"].mean()  # tov is correct
     assert mean_player["PTS"].values[0] == avail["PTS"].mean()  # pts is correct
 
+
+# DRAFT_PLAYER TESTS
 
 # test that draft player function removes a player from the given roster and places it into an empty roster
 def test_draft_player_to_empty_roster_success():

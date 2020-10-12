@@ -1,21 +1,8 @@
 import pandas as pd
 
-# Find player by name, return that row
+# Find player by exact name match, return row of that player's data
 def find_player(player_name, avail):
     return avail[avail["Player"] == player_name]
-
-
-# Remove player from available and place into roster, returning updated roster
-def draft_player(player_name, roster, avail):
-    player_row = avail[avail["Player"] == player_name]
-    if player_row.empty == True:
-        return roster
-    if roster.empty == False and "Mr Mean" in roster["Player"].values:
-        m_player = roster[roster["Player"] == "Mr Mean"]
-        roster.drop(m_player.index, inplace=True)
-    roster = roster.append(player_row)
-    avail.drop(player_row.index, inplace=True)
-    return roster
 
 
 # Generate and return mean player
@@ -36,3 +23,18 @@ def mean_player(avail):
     }
     mean = pd.DataFrame(data=d)
     return mean
+
+
+# Drafts a player from the available players and into a roster, returning that updated roster
+# - removes player from available pool
+# - if roster contains a placeholder mean player, it removes it before adding the drafted player
+def draft_player(player_name, roster, avail):
+    player_row = avail[avail["Player"] == player_name]
+    if player_row.empty == True:
+        return roster
+    if roster.empty == False and "Mr Mean" in roster["Player"].values:
+        m_player = roster[roster["Player"] == "Mr Mean"]
+        roster.drop(m_player.index, inplace=True)
+    roster = roster.append(player_row)
+    avail.drop(player_row.index, inplace=True)
+    return roster
