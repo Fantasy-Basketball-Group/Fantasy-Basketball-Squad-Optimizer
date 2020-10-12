@@ -1,14 +1,14 @@
 import sys, os
 
 sys.path.append(os.getcwd() + "/src/")
-import stat_funcs as sf
+import stat_funcs_basics as sf
 import pandas as pd
 
 df = pd.read_csv("data/test_data_set.csv")
 
 
 # test to find player successfully
-def test_get_player_success():
+def test_find_player_success():
     avail = df.copy()  # generate duplicate data
     player_name = "Stephen Curry"
     player_data = sf.find_player(player_name, avail)
@@ -16,14 +16,14 @@ def test_get_player_success():
     assert player_data["Player"].values[0] == player_name  # name is correct
     assert player_data["Pos"].values[0] == "PG"  # position is correct
     assert player_data["MP"].values[0] == 27.8  # minutes played is correct
-    assert player_data["FG"].values[0] == 6.6  # fg is correct
+    assert player_data["FGM"].values[0] == 6.6  # fgm is correct
     assert player_data["FGA"].values[0] == 16.4  # fga is correct
     assert player_data["FG%"].values[0] == 0.402  # fg% is correct
-    assert player_data["3P"].values[0] == 2.4  # 3p is correct
-    assert player_data["FT"].values[0] == 5.2  # ft is correct
+    assert player_data["3PT"].values[0] == 2.4  # 3pt is correct
+    assert player_data["FTM"].values[0] == 5.2  # ftm is correct
     assert player_data["FTA"].values[0] == 5.2  # fta is correct
     assert player_data["FT%"].values[0] == 1.0  # ft% is correct
-    assert player_data["TRB"].values[0] == 5.2  # trb is correct
+    assert player_data["REB"].values[0] == 5.2  # reb is correct
     assert player_data["AST"].values[0] == 6.6  # ast is correct
     assert player_data["STL"].values[0] == 1.0  # stl is correct
     assert player_data["BLK"].values[0] == 0.4  # blk is correct
@@ -32,7 +32,7 @@ def test_get_player_success():
 
 
 # test that a player returns an empty data frame
-def test_get_player_failure():
+def test_find_player_failure():
     avail = df.copy()  # generate duplicate data
     player_name = "Steven Curry"
     player_data = sf.find_player(player_name, avail)
@@ -45,12 +45,12 @@ def test_means_player_produces_means():
     mean_player = sf.mean_player(avail)
     assert len(mean_player.values) == 1  # produces a single player
     assert mean_player["Player"].values[0] == "Mr Mean"  # name is correct
-    assert mean_player["FG"].values[0] == avail["FG"].mean()  # fg is correct
+    assert mean_player["FGM"].values[0] == avail["FGM"].mean()  # fgm is correct
     assert mean_player["FGA"].values[0] == avail["FGA"].mean()  # fga is correct
-    assert mean_player["3P"].values[0] == avail["3P"].mean()  # 3p is correct
-    assert mean_player["FT"].values[0] == avail["FT"].mean()  # ft is correct
+    assert mean_player["3PT"].values[0] == avail["3PT"].mean()  # 3pt is correct
+    assert mean_player["FTM"].values[0] == avail["FTM"].mean()  # ftm is correct
     assert mean_player["FTA"].values[0] == avail["FTA"].mean()  # fta is correct
-    assert mean_player["TRB"].values[0] == avail["TRB"].mean()  # trb is correct
+    assert mean_player["REB"].values[0] == avail["REB"].mean()  # reb is correct
     assert mean_player["AST"].values[0] == avail["AST"].mean()  # ast is correct
     assert mean_player["STL"].values[0] == avail["STL"].mean()  # stl is correct
     assert mean_player["BLK"].values[0] == avail["BLK"].mean()  # blk is correct
