@@ -1,7 +1,7 @@
 import sys, os
 
 sys.path.append(os.getcwd() + "/src/")
-import stat_funcs_basics as sf
+import stat_funcs_basics as sfb
 import pandas as pd
 
 df = pd.read_csv("data/test_data_set.csv")
@@ -12,7 +12,7 @@ df = pd.read_csv("data/test_data_set.csv")
 def test_find_player_success():
     avail = df.copy()  # generate duplicate data
     player_name = "Stephen Curry"
-    player_data = sf.find_player(player_name, avail)
+    player_data = sfb.find_player(player_name, avail)
     assert len(player_data.values) == 1  # gets a single player
     assert player_data["Player"].values[0] == player_name  # name is correct
     assert player_data["Pos"].values[0] == "PG"  # position is correct
@@ -36,7 +36,7 @@ def test_find_player_success():
 def test_find_player_failure():
     avail = df.copy()  # generate duplicate data
     player_name = "Steven Curry"
-    player_data = sf.find_player(player_name, avail)
+    player_data = sfb.find_player(player_name, avail)
     assert player_data.empty == True
 
 
@@ -45,7 +45,7 @@ def test_find_player_failure():
 # test that mean player function produces means of all stats
 def test_means_player_produces_means():
     avail = df.copy()  # generate duplicate data
-    mean_player = sf.mean_player(avail)
+    mean_player = sfb.mean_player(avail)
     assert len(mean_player.values) == 1  # produces a single player
     assert mean_player["Player"].values[0] == "Mr Mean"  # name is correct
     assert mean_player["FGM"].values[0] == avail["FGM"].mean()  # fgm is correct
@@ -68,12 +68,12 @@ def test_draft_player_to_empty_roster_success():
     avail = df.copy()  # generate duplicate data
     empty_roster = pd.DataFrame()  # generate empty roster
     player_name = "Stephen Curry"
-    new_roster = sf.draft_player(player_name, empty_roster, avail)
+    new_roster = sfb.draft_player(player_name, empty_roster, avail)
     assert (
         len(avail.values) == len(df.values) - 1
     )  # available players is one less than before
     assert (
-        sf.find_player("Stephen Curry", avail).empty == True
+        sfb.find_player("Stephen Curry", avail).empty == True
     )  # the drafted played isn't in available players anymore
     assert len(new_roster.values) == 1  # roster has one player
     assert (
@@ -85,16 +85,16 @@ def test_draft_player_to_empty_roster_success():
 def test_draft_player_to_empty_roster_fail_to_find():
     avail = df.copy()
     empty_roster = pd.DataFrame()
-    mean_player = sf.mean_player(avail)
-    single_player = sf.find_player("Damian Lillard", avail)
+    mean_player = sfb.mean_player(avail)
+    single_player = sfb.find_player("Damian Lillard", avail)
     player_name = "Steven Curry"
-    assert sf.draft_player(player_name, empty_roster, avail).equals(
+    assert sfb.draft_player(player_name, empty_roster, avail).equals(
         empty_roster
     )  # empty unchanged
-    assert sf.draft_player(player_name, mean_player, avail).equals(
+    assert sfb.draft_player(player_name, mean_player, avail).equals(
         mean_player
     )  # mean unchanged
-    assert sf.draft_player(player_name, single_player, avail).equals(
+    assert sfb.draft_player(player_name, single_player, avail).equals(
         single_player
     )  # single unchanged
     assert avail.equals(df)  # avail unchanged
@@ -105,12 +105,12 @@ def test_draft_player_to_empty_success():
     avail = df.copy()
     empty_roster = pd.DataFrame()
     player_name = "Stephen Curry"
-    new_roster = sf.draft_player(player_name, empty_roster, avail)
+    new_roster = sfb.draft_player(player_name, empty_roster, avail)
     assert (
         len(avail.values) == len(df.values) - 1
     )  # size of available players decreases by 1
     assert (
-        sf.find_player(player_name, avail).empty == True
+        sfb.find_player(player_name, avail).empty == True
     )  # drafted player no longer available
     assert len(new_roster.values) == 1  # new roster has exactly one player in it
     assert (
@@ -121,19 +121,19 @@ def test_draft_player_to_empty_success():
 # test that draft player function success for mean player in roster
 def test_draft_player_to_mean_player_roster():
     avail = df.copy()
-    mean_player = sf.mean_player(avail)
+    mean_player = sfb.mean_player(avail)
     player_name = "Stephen Curry"
-    new_roster = sf.draft_player(player_name, mean_player, avail)
+    new_roster = sfb.draft_player(player_name, mean_player, avail)
     assert (
         len(avail.values) == len(df.values) - 1
     )  # size of available players decreases by 1
     assert (
-        sf.find_player(player_name, avail).empty == True
+        sfb.find_player(player_name, avail).empty == True
     )  # drafted player no longer available
     assert len(new_roster.values) == 1  # new roster has exactly one player in it
     assert (
         new_roster["Player"].values[0] == player_name
     )  # that player is the one that was drafted
     assert (
-        sf.find_player("Mr Mean", new_roster).empty == True
+        sfb.find_player("Mr Mean", new_roster).empty == True
     )  # mean player no longer on roster
