@@ -1,6 +1,7 @@
 import pandas as pd
 
 # Return net change on a percent stat
+# - rounds result to nearest 4 decimal places
 def net_change_percent_stat(t_made, t_attempts, p_made, p_attempts):
     before = (
         t_made / t_attempts
@@ -8,7 +9,7 @@ def net_change_percent_stat(t_made, t_attempts, p_made, p_attempts):
     after = (t_made + p_made) / (
         t_attempts + p_attempts
     )  # shooting percentage after player acquisition
-    return after - before
+    return round(after - before, 4)
 
 
 # Get net change for field goal percentage
