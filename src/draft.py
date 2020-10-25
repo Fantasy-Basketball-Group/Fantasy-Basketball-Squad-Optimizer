@@ -16,35 +16,36 @@ class league:
 def read_league_file (file_name, df):
     map_of_league = {}
     with open(file_name) as file:
-        for f in file:
+        for i,f in enumerate(file):
             lines = f.strip().split("\n")
-            for i, l in enumerate(lines, 1):
+            #print(lines)
+            #print(type(lines))
+            for l in lines:
                 seg = l.split(",")
-                print(i)
-                """
+                #print(i)
+                
                 if (i == 0): # First line has league name and number of people
                     #print("Here")
                     league_name = seg[0]
                     num_of_pl = seg[1]
                     continue
-                """
+                
                 cur_team = team(seg[0], seg[1], df)
                 #print(cur_team.owner_name)
                 #print(cur_team.team_name)
                 map_of_league[cur_team.owner_name] = cur_team
+                #print(map_of_league[cur_team.owner_name].team_name)
     
-    return league("league", 12, map_of_league)
+    return league(league_name, num_of_pl, map_of_league)
 
 def display_league (league):
     print ("League Name: ", league.league_name)
     print ("Member count: ", league.num_of_pl)
     print ("Teams:")
     for t in league.map_of_league:
-        print(t)
-        #print(t.team_name)
-        #print(t.roster) 
+        print(league.map_of_league[t].team_name) 
 
 # Read in data set
 df = pd.read_csv("data/data_set.csv")
 my_league = read_league_file("src/league.txt", df)
-#display_league(my_league)
+display_league(my_league)
