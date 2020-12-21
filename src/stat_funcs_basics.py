@@ -26,13 +26,13 @@ def get_league_data(filename, games_played=True):
             "STL": [player["STL"].values[0] * gp_weight],
             "BLK": [player["BLK"].values[0] * gp_weight],
             "TOV": [player["TOV"].values[0] * gp_weight],
-            "PTS": [player["PTS"].values[0] * gp_weight], 
+            "PTS": [player["PTS"].values[0] * gp_weight],
         }
         weighted_player_data = pd.DataFrame(weighted_player)
         league_data = league_data.append(weighted_player_data)
 
     league_data.reset_index(inplace=True, drop=True)
-    return league_data 
+    return league_data
 
 
 # Find player by exact name match, return row of that player's data
