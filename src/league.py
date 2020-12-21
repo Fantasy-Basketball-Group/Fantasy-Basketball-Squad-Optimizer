@@ -28,7 +28,7 @@ def read_league_file(file_name, df):
                 seg = l.split(",")
                 # print(i)
 
-                if (i == 0):  # First line has league name and number of people
+                if i == 0:  # First line has league name and number of people
                     # print("Here")
                     league_name = seg[0]
                     num_of_pl = seg[1]

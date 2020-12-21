@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+
 df = pd.read_csv("data/made_attempts.csv")
 fgm_list = list()
 fga_list = list()
