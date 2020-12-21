@@ -6,6 +6,41 @@ import pandas as pd
 
 df = pd.read_csv("data/test_data_set.csv")
 
+# GET_LEAGUE_DATA TESTS
+
+# test to import data correctly, flag off
+def test_get_league_data_flag_off():
+    league_data = sfb.get_league_data("data/test_data_set.csv", False)
+    assert league_data.equals(df)
+
+
+# test to import data correctly, flag on
+def test_get_league_data_flag_on():
+    league_data = sfb.get_league_data("data/test_data_set.csv")
+    avail = df.copy()
+    player_name = "Stephen Curry"
+    player_data = sfb.find_player(player_name, league_data)
+    gp_percentage = player_data["G"].values[0] / avail["G"].max()
+    assert len(player_data.values) == 1 # gets a single player
+    assert player_data["Player"].values[0] == player_name  # name is correct
+    assert player_data["Pos"].values[0] == "PG"  # position is correct
+    assert player_data["G"].values[0] == 5 # games played is correct
+    assert player_data["MP"].values[0] == 27.8 * gp_percentage # minutes played is correct
+    assert player_data["FGM"].values[0] == 6.6 * gp_percentage  # fgm is correct
+    assert player_data["FGA"].values[0] == 16.4 * gp_percentage  # fga is correct
+    assert player_data["FG%"].values[0] == 0.402  # fg% is correct
+    assert player_data["3PT"].values[0] == 2.4 * gp_percentage  # 3pt is correct
+    assert player_data["FTM"].values[0] == 5.2 * gp_percentage  # ftm is correct
+    assert player_data["FTA"].values[0] == 5.2 * gp_percentage  # fta is correct
+    assert player_data["FT%"].values[0] == 1.0  # ft% is correct
+    assert player_data["REB"].values[0] == 5.2 * gp_percentage  # reb is correct
+    assert player_data["AST"].values[0] == 6.6 * gp_percentage  # ast is correct
+    assert player_data["STL"].values[0] == 1.0 * gp_percentage  # stl is correct
+    assert player_data["BLK"].values[0] == 0.4 * gp_percentage  # blk is correct
+    assert player_data["TOV"].values[0] == 3.2 * gp_percentage  # tov is correct
+    assert player_data["PTS"].values[0] == 20.8 * gp_percentage  # pts is correct
+
+
 # FIND_PLAYER TESTS
 
 # test to find player successfully
@@ -16,6 +51,7 @@ def test_find_player_success():
     assert len(player_data.values) == 1  # gets a single player
     assert player_data["Player"].values[0] == player_name  # name is correct
     assert player_data["Pos"].values[0] == "PG"  # position is correct
+    assert player_data["G"].values[0] == 5 # games played is correct
     assert player_data["MP"].values[0] == 27.8  # minutes played is correct
     assert player_data["FGM"].values[0] == 6.6  # fgm is correct
     assert player_data["FGA"].values[0] == 16.4  # fga is correct
@@ -48,6 +84,7 @@ def test_means_player_produces_means():
     mean_player = sfb.mean_player(avail)
     assert len(mean_player.values) == 1  # produces a single player
     assert mean_player["Player"].values[0] == "Mr Mean"  # name is correct
+    assert mean_player["G"].values[0] == avail["G"].mean() # g is correct
     assert mean_player["FGM"].values[0] == avail["FGM"].mean()  # fgm is correct
     assert mean_player["FGA"].values[0] == avail["FGA"].mean()  # fga is correct
     assert mean_player["3PT"].values[0] == avail["3PT"].mean()  # 3pt is correct
