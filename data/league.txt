@@ -1,13 +1,13 @@
 Blazers in 4,12
-Santi Tobon,Beal or No Beal
-Nate Mann,Malcolm in the Middle
-Dustin Le,RIP KOBE
-Mack Cooper,Oops All Kneecapped
-Casey Kunzat,Brooklyn Nets Finals Bound
-Charles Clasuen,Taco Tuesday with Vuccie Mane
-Nick Cartier,Day to Day
-Trevor Liberty,Process Truster T
-Cody Jeffries,The North Couve
-Peter Crljenica,Petes HouseofRUI
-Jason Lee,To Be Determined
-Bethanie Jeffries,Bora Bora Beth
+Santi Tobon,Beal or No Beal,9
+Nate Mann,Malcolm in the Middle,6
+Dustin Le,RIP KOBE,8
+Mack Cooper,Oops All Kneecapped,7
+Casey Kunzat,Brooklyn Nets Finals Bound,11
+Charles Clasuen,Taco Tuesday with Vuccie Mane,1
+Nick Cartier,Day to Day,2
+Trevor Liberty,Process Truster T,4
+Cody Jeffries,The North Couve,12
+Peter Crljenica,Petes HouseofRUI,10
+Jason Lee,To Be Determined,3
+Bethanie Jeffries,Bora Bora Beth,5
