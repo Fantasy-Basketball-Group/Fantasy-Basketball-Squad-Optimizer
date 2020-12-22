@@ -10,7 +10,6 @@ def optimizer_analysis2(roster, draft_pool):
     net_change_table = sfn.generate_net_change_table(roster, draft_pool)
     z_score_table = sfz.generate_z_score_table(net_change_table)
     z_score_table.sort_values(by=["Z_AVG"], ascending=False, inplace=True)
-    print(net_change_table.to_string())
     print(z_score_table.to_string())
     return
 
