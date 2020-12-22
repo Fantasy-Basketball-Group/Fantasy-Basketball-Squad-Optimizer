@@ -33,6 +33,7 @@ def read_league_file(file_name, df):
                     # print("Here")
                     league_name = seg[0]
                     num_of_pl = seg[1]
+                    num_of_rounds = seg[2]
                     continue
 
                 cur_team = team(seg[0], seg[1], df)
@@ -42,7 +43,7 @@ def read_league_file(file_name, df):
                 map_of_league[cur_team.owner_name] = cur_team
                 # print(map_of_league[cur_team.owner_name].team_name)
 
-    return league(league_name, num_of_pl, map_of_league), draft_order
+    return league(league_name, num_of_pl, map_of_league), draft_order, num_of_rounds
 
 
 def display_league(league):
