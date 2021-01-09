@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/Fantasy-Basketball-Group/Fantasy-Basketball-Squad-Optimizer.svg?branch=master)](https://travis-ci.com/santitobon9/Fantasy-Basketball-Squad-Optimizer)
 
 # Fantasy-Basketball-Squad-Optimizer-
-This program will help a user build the most optimal fantasy basketball
+This program will help a user build the most optimal fantasy basketball Team
 
 ## Install
 `pip3 install -r requirements.txt`
