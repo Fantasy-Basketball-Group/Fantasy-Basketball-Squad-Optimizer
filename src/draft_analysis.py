@@ -5,7 +5,7 @@ import league as lg
 import pandas as pd
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
-
+# Generates Z scores for all available player if added to roster
 def optimizer_analysis2(roster, draft_pool):
     net_change_table = sfn.generate_net_change_table(roster, draft_pool)
     z_score_table = sfz.generate_z_score_table(net_change_table)
@@ -15,8 +15,6 @@ def optimizer_analysis2(roster, draft_pool):
 
 # Return net change on a percent stat
 # - rounds result to nearest 4 decimal places
-
-
 def change_percent_stat(t_made, t_attempts, p_made, p_attempts):
     # shooting percentage after player acquisition
     after = (t_made + p_made) / (t_attempts + p_attempts)
@@ -49,7 +47,7 @@ def change_counting_stat(roster, player, counting_stat):
     after = (t_stat + p_stat) / (t_size + 1)
     return after
 
-
+# Return the net change to the team when a player is added
 def change_on_acquisition(roster, player):
     d = {
         "Player": [player["Player"].values[0]],
