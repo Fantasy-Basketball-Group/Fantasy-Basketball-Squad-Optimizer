@@ -1,8 +1,6 @@
 import pandas as pd
 
 # Find player by exact name match, return row of that player's data
-
-
 def find_player(player_name, avail):
     return avail[avail["Player"] == player_name]
 

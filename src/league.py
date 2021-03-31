@@ -23,25 +23,20 @@ def read_league_file(file_name, df):
     with open(file_name) as file:
         for i, f in enumerate(file):
             lines = f.strip().split("\n")
-            # print(lines)
-            # print(type(lines))
             for l in lines:
                 seg = l.split(",")
                 # print(i)
 
-                if (i == 0):  # First line has league name and number of people
-                    # print("Here")
+                if i == 0:  # First line has league name and number of people
                     league_name = seg[0]
                     num_of_pl = seg[1]
                     num_of_rounds = seg[2]
                     continue
 
                 cur_team = team(seg[0], seg[1], df)
-                # print(cur_team.owner_name)
-                # print(cur_team.team_name)
+
                 draft_order[seg[2]] = cur_team.owner_name
                 map_of_league[cur_team.owner_name] = cur_team
-                # print(map_of_league[cur_team.owner_name].team_name)
 
     return league(league_name, num_of_pl, map_of_league), draft_order, num_of_rounds
 

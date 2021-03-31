@@ -10,7 +10,6 @@ del df["2P%"], df["eFG%"], df["ORB"], df["DRB"], df["PF"]
 # clean player names column
 for ind in df.index:
     player_name = df["Player"][ind].split("\\")[0]
-    # df['Player'][ind] = player_name
     df.loc[ind, ["Player"]] = player_name
 
 # delete duplicate players on different teams

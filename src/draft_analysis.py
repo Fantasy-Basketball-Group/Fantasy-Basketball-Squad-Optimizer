@@ -3,6 +3,7 @@ import stat_funcs_net as sfn
 import stat_funcs_z as sfz
 import league as lg
 import pandas as pd
+
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 # Generates Z scores for all available player if added to roster
@@ -12,6 +13,7 @@ def optimizer_analysis2(roster, draft_pool):
     z_score_table.sort_values(by=["Z_AVG"], ascending=False, inplace=True)
     print(z_score_table.to_string())
     return
+
 
 # Return net change on a percent stat
 # - rounds result to nearest 4 decimal places
@@ -47,6 +49,7 @@ def change_counting_stat(roster, player, counting_stat):
     after = (t_stat + p_stat) / (t_size + 1)
     return after
 
+
 # Return the net change to the team when a player is added
 def change_on_acquisition(roster, player):
     d = {
@@ -67,7 +70,7 @@ def change_on_acquisition(roster, player):
 
 def analyze_roster(roster, player_pool):
     ex = False
-    while(ex == False):
+    while ex == False:
         print("Analysis Menu: ")
         print("1. Add Player")
         print("2. Display Roster")
@@ -76,24 +79,21 @@ def analyze_roster(roster, player_pool):
         print("5. Quit")
         choice = input()
 
-        if (choice == "1"):
+        if choice == "1":
             player_name = input("Who would you like to add? ")
             roster = sfb.draft_player(player_name, roster, player_pool)
-        elif (choice == "2"):
+        elif choice == "2":
             print(roster.to_string())
-        elif (choice == "3"):
-            player_name = input(
-                "Who would you like to check if on your team? ")
+        elif choice == "3":
+            player_name = input("Who would you like to check if on your team? ")
             player = sfb.find_player(player_name, player_pool)
             print("Change to team:")
-            print(change_on_acquisition(
-                roster, player).to_string())
+            print(change_on_acquisition(roster, player).to_string())
             print("Net Change with player:")
-            print(sfn.net_change_on_acquisition(
-                roster, player).to_string())
-        elif (choice == "4"):
+            print(sfn.net_change_on_acquisition(roster, player).to_string())
+        elif choice == "4":
             optimizer_analysis2(roster, player_pool)
-        elif (choice == "5"):
+        elif choice == "5":
             ex = True
 
     return
