@@ -16,7 +16,7 @@ z_score_table = sfz.generate_z_score_table(net_change_table)
 # Select data parameter & print table
 stat_str = "Z_AVG"
 z_score_table.sort_values(by=[stat_str], ascending=False, inplace=True)
-#z_score_table.to_csv("data/z_score_table.csv", index=False)
+# z_score_table.to_csv("data/z_score_table.csv", index=False)
 print(net_change_table)
 print(z_score_table)
 
