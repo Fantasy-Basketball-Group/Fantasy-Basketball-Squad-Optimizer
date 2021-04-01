@@ -25,7 +25,6 @@ def read_league_file(file_name, df):
             lines = f.strip().split("\n")
             for l in lines:
                 seg = l.split(",")
-                # print(i)
 
                 if i == 0:  # First line has league name and number of people
                     league_name = seg[0]
